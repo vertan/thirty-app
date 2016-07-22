@@ -46,7 +46,7 @@ public class CheckScoreActivity extends AppCompatActivity {
 
         // Create spinner to let user choose method.
         Spinner spinner = (Spinner) findViewById(R.id.scoretype_spinner);
-        ArrayList scoreOptionsList = new ArrayList<>();
+        ArrayList<String> scoreOptionsList = new ArrayList<>();
         for(int i = 0; i < scoreOptions.length; i++) {
             if(!DiceActivity.usedSumTypes[i]) {
                 scoreOptionsList.add(scoreOptions[i]);
@@ -66,7 +66,7 @@ public class CheckScoreActivity extends AppCompatActivity {
                 });
 
         // Populate spinner with remaining methods.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, scoreOptionsList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, scoreOptionsList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -117,6 +117,8 @@ public class CheckScoreActivity extends AppCompatActivity {
         int chosenType = getPositionFromText(chosenString) + 3;
         int sum = 0;
 
+
+        
         // Special case for the Low method.
         if(chosenString == "Low") {
             for(int i = 0; i < dice.length; i++) {
