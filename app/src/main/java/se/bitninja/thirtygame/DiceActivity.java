@@ -38,8 +38,8 @@ public class DiceActivity extends AppCompatActivity {
 
     public enum faceColor {WHITE, GREY, RED}
 
-    Dice[] dice;
-    int roundsLeft = 2;
+    private Dice[] dice;
+    private int roundsLeft = 2;
     public static final int DICE_AMOUNT = 6;
     public static final int FACE_AMOUNT = 6;
     public final static String DICES = "se.bitninja.thirty.DICES";
@@ -114,10 +114,8 @@ public class DiceActivity extends AppCompatActivity {
         }
     }
 
-    // Rolls our dice
-
     /**
-     * Rolls our dice and updates the face pictures.
+     * Rolls our die and updates the face pictures.
      * @param view The view from the clicked button
      */
     public void diceRoller(View view) {

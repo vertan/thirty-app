@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public class CheckScoreActivity extends AppCompatActivity {
 
-    Dice[] dice;
-    int comboSum;
+    private Dice[] dice;
+    private int comboSum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
