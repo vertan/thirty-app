@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ThirtyGame</string>
+    <string name="pick_dice">Pick your dice!</string>
+    <string name="rounds_left">Available throws: 2</string>
+    <string name="check_score">Check score!</string>
+    <string name="chosen_type">Please choose a method to use.</string>
+    <string name="check_combo">Add combo to sum</string>
+    <string name="current_combo_sum">0 combinations of sum 5.</string>
+    <string name="current_combo_score">Combo score: 0</string>
+    <string name="save_combos">Save combos and continue!</string>
+    <string name="main_menu_text">Welcome to Thirty!</string>
+    <string name="new_game">Start new game</string>
+    <string name="result_title">Results</string>
+    <string name="back_to_main_menu">Back to main menu</string>
+    <string name="final_sum">Final sum: 0</string>
+</resources>
