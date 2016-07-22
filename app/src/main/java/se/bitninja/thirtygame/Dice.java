@@ -4,6 +4,7 @@ import android.widget.ImageButton;
 
 public class Dice {
 
+    // TODO Move graphical representation out of this class?
     int[] whiteFaces = {
             R.drawable.white1,
             R.drawable.white2,
@@ -29,19 +30,33 @@ public class Dice {
             R.drawable.red6
     };
 
-    private int number, face;
+    private int number, face, sides;
     private boolean saved;
     private ImageButton button;
 
     /**
      * Construct a new Dice object.
-     * @param number The number facing up on the die.
      */
-    public Dice(int number) {
-        this.number = number;
-        this.setFace(number);
-        this.saved  = false;
+    public Dice(int sides) {
+        this.setSides(sides);
+        this.roll();
+        this.setSaved(false);
     }
+
+    /**
+     * Roll the die
+     */
+    public void roll() {
+        int newSide = (int)Math.floor(Math.random() * this.sides + 1);
+        this.setNumber(newSide);
+        this.setFace(newSide);
+    }
+
+    /**
+     * Set amount of sides on the die
+     * @param sides
+     */
+    public void setSides(int sides) { this.sides = sides; }
 
     /**
      * Set new face number.
@@ -51,43 +66,29 @@ public class Dice {
         this.face = number - 1;
     }
 
-    public int getFace() {
-        return this.face;
-    }
+    public int getFace() { return this.face; }
 
-    public int getNumber() {
-        return this.number;
-    }
+    public int getNumber() { return this.number; }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
+    public void setNumber(int number) { this.number = number; }
 
-    public void setButton(ImageButton button) {
-        this.button = button;
-    }
+    public void setButton(ImageButton button) { this.button = button; }
 
-    public ImageButton getButton() {
-        return this.button;
-    }
+    public ImageButton getButton() { return this.button; }
 
-    public void setSaved(boolean saved) {
-        this.saved = saved;
-    }
+    public void setSaved(boolean saved) { this.saved = saved; }
 
-    public boolean isSaved() {
-        return saved;
-    }
+    public boolean isSaved() { return saved; }
 
     /**
      * Toggles the save state on the die.
      */
     public void toggleSaved() {
         if(saved){
-            saved = false;
+            this.setSaved(false);
             this.getButton().setImageResource(whiteFaces[this.getFace()]);
         } else {
-            saved = true;
+            this.setSaved(true);
             this.getButton().setImageResource(greyFaces[this.getFace()]);
         }
     }
