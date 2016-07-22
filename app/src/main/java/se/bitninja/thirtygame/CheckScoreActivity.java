@@ -117,10 +117,8 @@ public class CheckScoreActivity extends AppCompatActivity {
         int chosenType = getPositionFromText(chosenString) + 3;
         int sum = 0;
 
-
-        
         // Special case for the Low method.
-        if(chosenString == "Low") {
+        if(chosenString.equals("Low")) {
             for(int i = 0; i < dice.length; i++) {
                 if(dice[i].isSaved()) {
                     if(dice[i].getNumber() <= 3) {
@@ -217,7 +215,7 @@ public class CheckScoreActivity extends AppCompatActivity {
         Spinner spinner = (Spinner)findViewById(R.id.scoretype_spinner);
         String chosenType = spinner.getSelectedItem().toString();
         TextView text = (TextView)findViewById(R.id.current_combo_sum);
-        if(chosenType == "Low") {
+        if(chosenType.equals("Low")) {
             text.setText("Select all dice with a max value of three.");
         } else {
             text.setText("0 combinations of " + chosenType.toLowerCase() + ".");
