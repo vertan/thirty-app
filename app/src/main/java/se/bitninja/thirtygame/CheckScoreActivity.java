@@ -30,13 +30,14 @@ public class CheckScoreActivity extends AppCompatActivity {
 
         // Reconstruct the dice from last activity.
         comboSum = 0;
-        dice = new Dice[6];
+        dice = new Dice[DiceActivity.DICE_AMOUNT];
         for(int i = 0; i < savedDice.length; i++) {
-            dice[i] = new Dice(savedDice[i]);
+            dice[i] = new Dice(DiceActivity.FACE_AMOUNT);
+            dice[i].setNumber(savedDice[i]);
             String buttonID = "dice" + (i+1);
             int resID = getResources().getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
             dice[i].setButton((ImageButton) findViewById(resID));
-            dice[i].getButton().setImageResource(dice[i].whiteFaces[dice[i].getNumber()-1]);
+            dice[i].getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.WHITE, dice[i].getNumber()));
         }
 
         // The string representations of the different score methods.
@@ -139,7 +140,7 @@ public class CheckScoreActivity extends AppCompatActivity {
                 if(dice[i].isSaved()) {
                     dice[i].setSaved(false);
                     dice[i].getButton().setEnabled(false);
-                    dice[i].getButton().setImageResource(dice[i].redFaces[dice[i].getFace()]);
+                    dice[i].getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.RED, dice[i].getNumber()));
                 }
             }
             // Update combo text
@@ -161,7 +162,7 @@ public class CheckScoreActivity extends AppCompatActivity {
                     if(dice[i].isSaved()) {
                         dice[i].setSaved(false);
                         dice[i].getButton().setEnabled(false);
-                        dice[i].getButton().setImageResource(dice[i].redFaces[dice[i].getFace()]);
+                        dice[i].getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.RED, dice[i].getNumber()));
                     }
                 }
                 comboSum += sum;

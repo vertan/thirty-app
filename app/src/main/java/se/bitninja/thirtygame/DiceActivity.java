@@ -11,8 +11,37 @@ import android.widget.Toast;
 
 public class DiceActivity extends AppCompatActivity {
 
+    private static int[] whiteFaces = {
+            R.drawable.white1,
+            R.drawable.white2,
+            R.drawable.white3,
+            R.drawable.white4,
+            R.drawable.white5,
+            R.drawable.white6
+    };
+    private static int[] greyFaces = {
+            R.drawable.grey1,
+            R.drawable.grey2,
+            R.drawable.grey3,
+            R.drawable.grey4,
+            R.drawable.grey5,
+            R.drawable.grey6
+    };
+    private static int[] redFaces = {
+            R.drawable.red1,
+            R.drawable.red2,
+            R.drawable.red3,
+            R.drawable.red4,
+            R.drawable.red5,
+            R.drawable.red6
+    };
+
+    public enum faceColor {WHITE, GREY, RED}
+
     Dice[] dice;
     int roundsLeft = 2;
+    public static final int DICE_AMOUNT = 6;
+    public static final int FACE_AMOUNT = 6;
     public final static String DICES = "se.bitninja.thirty.DICES";
 
     // Static values used between different activities.
@@ -28,16 +57,34 @@ public class DiceActivity extends AppCompatActivity {
         currentRound++;
 
         // Create new dice array and set the face pictures.
-        dice = new Dice[6];
-        for(int i = 0; i < 6; i++) {
-            int rand = (int) Math.floor((Math.random() * 6) + 1);
-            dice[i] = new Dice(rand);
+        dice = new Dice[DICE_AMOUNT];
+        for(int i = 0; i < DICE_AMOUNT; i++) {
+            dice[i] = new Dice(FACE_AMOUNT);
             String buttonID = "dice" + (i+1);
             int resID = getResources().getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
             dice[i].setButton((ImageButton) findViewById(resID));
-            dice[i].getButton().setImageResource(dice[i].whiteFaces[rand-1]);
+            dice[i].getButton().setImageResource(getFaceImage(faceColor.WHITE, dice[i].getNumber()));
         }
 
+    }
+
+    public static int getFaceImage(faceColor color, int number) {
+        int faceImage = 0;
+        switch(color) {
+            case WHITE:
+                faceImage = whiteFaces[number-1];
+                break;
+            case GREY:
+                faceImage = greyFaces[number-1];
+                break;
+            case RED:
+                faceImage = redFaces[number-1];
+                break;
+            default:
+                getFaceImage(faceColor.WHITE, number);
+        }
+
+        return faceImage;
     }
 
     /**
@@ -75,14 +122,12 @@ public class DiceActivity extends AppCompatActivity {
      */
     public void diceRoller(View view) {
         if(roundsLeft > 0) {
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < DICE_AMOUNT; i++) {
                 if (dice[i].isSaved()) {
                     continue;
                 }
-                int rand = (int) Math.floor((Math.random() * 6) + 1);
-                dice[i].setNumber(rand);
-                dice[i].setFace(rand);
-                dice[i].getButton().setImageResource(dice[i].whiteFaces[rand-1]);
+                dice[i].roll();
+                dice[i].getButton().setImageResource(getFaceImage(faceColor.WHITE, dice[i].getNumber()));
             }
             roundsLeft--;
             TextView text = (TextView)findViewById(R.id.available_throws);
@@ -106,8 +151,8 @@ public class DiceActivity extends AppCompatActivity {
     public void checkScore(View view) {
         Intent intent = new Intent(this, CheckScoreActivity.class);
 
-        int[] dicesInt = new int[6];
-        for(int i = 0; i < dice.length; i++) {
+        int[] dicesInt = new int[DICE_AMOUNT];
+        for(int i = 0; i < DICE_AMOUNT; i++) {
             dicesInt[i] = dice[i].getNumber();
         }
 

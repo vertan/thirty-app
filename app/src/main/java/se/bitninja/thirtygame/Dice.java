@@ -4,32 +4,6 @@ import android.widget.ImageButton;
 
 public class Dice {
 
-    // TODO Move graphical representation out of this class?
-    int[] whiteFaces = {
-            R.drawable.white1,
-            R.drawable.white2,
-            R.drawable.white3,
-            R.drawable.white4,
-            R.drawable.white5,
-            R.drawable.white6
-    };
-    int[] greyFaces = {
-            R.drawable.grey1,
-            R.drawable.grey2,
-            R.drawable.grey3,
-            R.drawable.grey4,
-            R.drawable.grey5,
-            R.drawable.grey6
-    };
-    int[] redFaces = {
-            R.drawable.red1,
-            R.drawable.red2,
-            R.drawable.red3,
-            R.drawable.red4,
-            R.drawable.red5,
-            R.drawable.red6
-    };
-
     private int number, face, sides;
     private boolean saved;
     private ImageButton button;
@@ -86,10 +60,10 @@ public class Dice {
     public void toggleSaved() {
         if(saved){
             this.setSaved(false);
-            this.getButton().setImageResource(whiteFaces[this.getFace()]);
+            this.getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.WHITE, this.getNumber()));
         } else {
             this.setSaved(true);
-            this.getButton().setImageResource(greyFaces[this.getFace()]);
+            this.getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.GREY, this.getNumber()));
         }
     }
 }
