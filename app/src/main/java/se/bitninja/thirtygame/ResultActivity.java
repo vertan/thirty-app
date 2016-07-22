@@ -22,12 +22,12 @@ public class ResultActivity extends AppCompatActivity {
                 "Low", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"
         };
         int finalSum = 0;
-        ArrayList resultList = new ArrayList<>();
+        ArrayList<String> resultList = new ArrayList<>();
         for(int i = 0; i < DiceActivity.scoreList.length; i++) {
             finalSum += DiceActivity.scoreList[i];
             resultList.add(scoreOptions[i] + " - " + DiceActivity.scoreList[i]);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, resultList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, resultList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         resultListView.setAdapter(adapter);
 
