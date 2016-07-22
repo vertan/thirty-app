@@ -86,9 +86,11 @@ public class DiceActivity extends AppCompatActivity {
             }
             roundsLeft--;
             TextView text = (TextView)findViewById(R.id.available_throws);
+            // TODO Replace text literal
             text.setText("Available throws: " + roundsLeft);
         } else {
             Context context = getApplicationContext();
+            // TODO Replace text literal
             CharSequence text = "No rolls left!";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
