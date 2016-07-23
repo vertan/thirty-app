@@ -18,9 +18,9 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
 
         ListView resultListView = (ListView)findViewById(R.id.result_list);
-        String[] scoreOptions = {
-                "Low", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"
-        };
+
+        String[] scoreOptions = getResources().getStringArray(R.array.scoreOptions);
+
         int finalSum = 0;
         ArrayList<String> resultList = new ArrayList<>();
         for(int i = 0; i < DiceActivity.scoreList.length; i++) {

@@ -13,4 +13,28 @@
     <string name="result_title">Results</string>
     <string name="back_to_main_menu">Back to main menu</string>
     <string name="final_sum">Final sum: 0</string>
+
+    <string name="option_low"></string>
+    <string name="option_four"></string>
+    <string name="option_five"></string>
+    <string name="option_six"></string>
+    <string name="option_seven"></string>
+    <string name="option_eight"></string>
+    <string name="option_nine"></string>
+    <string name="option_ten"></string>
+    <string name="option_eleven"></string>
+    <string name="option_twelve"></string>
+
+    <string-array name="scoreOptions">
+        <item>@string/option_low</item>
+        <item>@string/option_four</item>
+        <item>@string/option_five</item>
+        <item>@string/option_six</item>
+        <item>@string/option_seven</item>
+        <item>@string/option_eight</item>
+        <item>@string/option_nine</item>
+        <item>@string/option_ten</item>
+        <item>@string/option_eleven</item>
+        <item>@string/option_twelve</item>
+    </string-array>
 </resources>

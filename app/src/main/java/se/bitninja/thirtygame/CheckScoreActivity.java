@@ -41,9 +41,7 @@ public class CheckScoreActivity extends AppCompatActivity {
         }
 
         // The string representations of the different score methods.
-        String[] scoreOptions = {
-            "Low", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"
-        };
+        String[] scoreOptions = getResources().getStringArray(R.array.scoreOptions);
 
         // Create spinner to let user choose method.
         Spinner spinner = (Spinner) findViewById(R.id.scoretype_spinner);
@@ -80,6 +78,7 @@ public class CheckScoreActivity extends AppCompatActivity {
      * @return The integer representation of a given method string.
      */
     public int getPositionFromText(String text) {
+        // The string representations of the different score methods.
         switch(text) {
             case "Low":
                 return 0;
@@ -101,9 +100,9 @@ public class CheckScoreActivity extends AppCompatActivity {
                 return 8;
             case "Twelve":
                 return 9;
+            default:
+                return 0;
         }
-
-        return 0;
 
     }
 
