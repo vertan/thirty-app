@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -14,6 +16,10 @@ import android.widget.Toast;
 public class DiceActivity extends AppCompatActivity {
 
     public enum faceColor {WHITE, GREY, RED}
+    private final String ROUNDS_LEFT = "roundsLeft";
+    private final String CURRENT_ROUND = "currentRound";
+    private final String SCORE_LIST = "scoreList";
+    public final static String USED_SUM_TYPES = "usedSumTypes";
 
     private Dice[] dice;
     private int roundsLeft = 2;
@@ -24,14 +30,26 @@ public class DiceActivity extends AppCompatActivity {
     // Static values used between different activities.
     public static int currentRound = 0;
     public static int[] scoreList = new int[10];
-    public static boolean[] usedSumTypes = new boolean[10];
+    private  boolean[] usedSumTypes = new boolean[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        currentRound++;
+        if(savedInstanceState != null) {
+            roundsLeft = savedInstanceState.getInt(ROUNDS_LEFT);
+            currentRound = savedInstanceState.getInt(CURRENT_ROUND);
+            scoreList = savedInstanceState.getIntArray(SCORE_LIST);
+            usedSumTypes = savedInstanceState.getBooleanArray(USED_SUM_TYPES);
+        } else {
+            currentRound++;
+        }
+
+        Intent intent = getIntent();
+        if(intent != null) {
+            usedSumTypes = intent.getBooleanArrayExtra(DiceActivity.USED_SUM_TYPES);
+        }
 
         // Create new dice array and set the face pictures.
         dice = new Dice[DICE_AMOUNT];
@@ -47,6 +65,35 @@ public class DiceActivity extends AppCompatActivity {
         TextView text = (TextView)findViewById(R.id.available_throws);
         text.setText(String.format(getResources().getString(R.string.rounds_left), roundsLeft));
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putInt(ROUNDS_LEFT, roundsLeft);
+        // TODO Save Dice array
+        savedInstanceState.putInt(CURRENT_ROUND, currentRound);
+        savedInstanceState.putIntArray(SCORE_LIST, scoreList);
+        savedInstanceState.putBooleanArray(USED_SUM_TYPES, usedSumTypes);
+
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        //roundsLeft = savedInstanceState.getInt(ROUNDS_LEFT);
+        //roundsLeft = 10;
+        // TODO Restore roundsLeft
+        // TODO Restore Dice array
+        // TODO Restore currentRound
+        // TODO Restore scoreList
+        // TODO Restore usedSumTypes
+        Log.d("TEEEEEEST", "onrestoreInstance!!!");
+
+        //TextView text = (TextView)findViewById(R.id.available_throws);
+        //text.setText(String.format(getResources().getString(R.string.rounds_left), roundsLeft));
     }
 
     public static Drawable getFaceImage(ImageButton button, faceColor color, int number) {
@@ -140,6 +187,7 @@ public class DiceActivity extends AppCompatActivity {
             dicesInt[i] = dice[i].getNumber();
         }
 
+        intent.putExtra(USED_SUM_TYPES, usedSumTypes);
         intent.putExtra(DICES, dicesInt);
         startActivity(intent);
     }

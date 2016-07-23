@@ -20,6 +20,7 @@ public class CheckScoreActivity extends AppCompatActivity {
 
     private Dice[] dice;
     private int comboSum;
+    private boolean[] usedSumTypes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,11 @@ public class CheckScoreActivity extends AppCompatActivity {
         // Get dice from last activity
         Intent intent = getIntent();
         int[] savedDice = intent.getIntArrayExtra(DiceActivity.DICES);
+        usedSumTypes = intent.getBooleanArrayExtra(DiceActivity.USED_SUM_TYPES);
+
+        // Save state of used type locally
+        //boolean[] usedSumTypesLocal = new boolean[DiceActivity.usedSumTypes.length];
+        //System.arraycopy(DiceActivity.usedSumTypes, 0, usedSumTypesLocal, 0, DiceActivity.usedSumTypes.length);
 
         // Reconstruct the dice from last activity.
         comboSum = 0;
@@ -51,7 +57,7 @@ public class CheckScoreActivity extends AppCompatActivity {
         ArrayList<String> scoreOptionsList = new ArrayList<>();
 
         for(int i = 0; i < scoreOptions.length; i++) {
-            if(!DiceActivity.usedSumTypes[i]) {
+            if(!usedSumTypes[i]) {
                 scoreOptionsList.add(scoreOptions[i]);
             }
 
@@ -201,7 +207,7 @@ public class CheckScoreActivity extends AppCompatActivity {
         Spinner spinner = (Spinner)findViewById(R.id.scoretype_spinner);
         String chosenString = spinner.getSelectedItem().toString();
         int chosenType = getPositionFromText(chosenString);
-        DiceActivity.usedSumTypes[chosenType] = true;
+        usedSumTypes[chosenType] = true;
         DiceActivity.scoreList[chosenType] = comboSum;
 
         // Check if game is over
@@ -210,6 +216,7 @@ public class CheckScoreActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, DiceActivity.class);
+            intent.putExtra(DiceActivity.USED_SUM_TYPES, usedSumTypes);
             startActivity(intent);
         }
 

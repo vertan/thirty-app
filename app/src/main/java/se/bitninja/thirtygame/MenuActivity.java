@@ -21,8 +21,9 @@ public class MenuActivity extends AppCompatActivity {
     public void startGame(View view) {
         DiceActivity.currentRound = 0;
         DiceActivity.scoreList = new int[10];
-        DiceActivity.usedSumTypes = new boolean[10];
+        boolean[] usedSumTypes = new boolean[10];
         Intent intent = new Intent(this, DiceActivity.class);
+        intent.putExtra(DiceActivity.USED_SUM_TYPES, usedSumTypes);
         startActivity(intent);
     }
 }
