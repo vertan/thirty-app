@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ThirtyGame</string>
     <string name="pick_dice">Pick your dice!</string>
-    <string name="rounds_left">Available throws: 2</string>
+    <string name="rounds_left">Available throws: %1$d</string>
     <string name="check_score">Check score!</string>
     <string name="chosen_type">Please choose a method to use.</string>
     <string name="check_combo">Add combo to sum</string>
@@ -19,6 +19,7 @@
     <string name="incorrect_combo">Incorrect combo, try again!</string>
     <string name="select_low_combo">Select all dice with a max value of three.</string>
     <string name="result_item">%1$s - %2$d</string>
+    <string name="no_rolls">No rolls left!</string>
 
     <string name="option_low">Low</string>
     <string name="option_four">Four</string>

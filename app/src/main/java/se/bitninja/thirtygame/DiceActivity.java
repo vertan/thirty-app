@@ -44,6 +44,9 @@ public class DiceActivity extends AppCompatActivity {
             b.setImageDrawable(getFaceImage(b, faceColor.WHITE, dice[i].getNumber()));
         }
 
+        TextView text = (TextView)findViewById(R.id.available_throws);
+        text.setText(String.format(getResources().getString(R.string.rounds_left), roundsLeft));
+
     }
 
     public static Drawable getFaceImage(ImageButton button, faceColor color, int number) {
@@ -114,12 +117,10 @@ public class DiceActivity extends AppCompatActivity {
             }
             roundsLeft--;
             TextView text = (TextView)findViewById(R.id.available_throws);
-            // TODO Replace text literal
-            text.setText("Available throws: " + roundsLeft);
+            text.setText(String.format(getResources().getString(R.string.rounds_left), roundsLeft));
         } else {
             Context context = getApplicationContext();
-            // TODO Replace text literal
-            CharSequence text = "No rolls left!";
+            CharSequence text = getResources().getString(R.string.no_rolls);
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
