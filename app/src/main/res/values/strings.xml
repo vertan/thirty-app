@@ -12,12 +12,13 @@
     <string name="new_game">Start new game</string>
     <string name="result_title">Results</string>
     <string name="back_to_main_menu">Back to main menu</string>
-    <string name="final_sum">Final sum: 0</string>
+    <string name="final_sum">Final sum: %1$d</string>
     <string name="combo_score">Combo score: %1$d</string>
     <string name="wrong_value_toast">Dice with value over three not added to sum!</string>
     <string name="combo_count">%1$d combinations of %2$s.</string>
     <string name="incorrect_combo">Incorrect combo, try again!</string>
     <string name="select_low_combo">Select all dice with a max value of three.</string>
+    <string name="result_item">%1$s - %2$d</string>
 
     <string name="option_low">Low</string>
     <string name="option_four">Four</string>
