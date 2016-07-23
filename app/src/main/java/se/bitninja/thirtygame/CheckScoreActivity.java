@@ -38,8 +38,9 @@ public class CheckScoreActivity extends AppCompatActivity {
             dice[i].setNumber(savedDice[i]);
             String buttonID = "dice" + (i+1);
             int resID = getResources().getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
-            dice[i].setButton((ImageButton) findViewById(resID));
-            dice[i].getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.WHITE, dice[i].getNumber()));
+            ImageButton b = (ImageButton) findViewById(resID);
+            dice[i].setButton(b);
+            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, dice[i].getNumber()));
         }
 
         // The string representations of the different score methods.
@@ -49,9 +50,7 @@ public class CheckScoreActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) findViewById(R.id.scoretype_spinner);
         ArrayList<String> scoreOptionsList = new ArrayList<>();
 
-        Log.d("testing", "length: " + scoreOptions.length);
         for(int i = 0; i < scoreOptions.length; i++) {
-            Log.d("scoreOptionTest", "testing" + scoreOptions[i]);
             if(!DiceActivity.usedSumTypes[i]) {
                 scoreOptionsList.add(scoreOptions[i]);
             }
@@ -145,8 +144,9 @@ public class CheckScoreActivity extends AppCompatActivity {
             for(int i = 0; i < dice.length; i++) {
                 if(dice[i].isSaved()) {
                     dice[i].setSaved(false);
-                    dice[i].getButton().setEnabled(false);
-                    dice[i].getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.RED, dice[i].getNumber()));
+                    ImageButton b = dice[i].getButton();
+                    b.setEnabled(false);
+                    b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.RED, dice[i].getNumber()));
                 }
             }
             // Update combo text
@@ -167,8 +167,9 @@ public class CheckScoreActivity extends AppCompatActivity {
                 for(int i = 0; i < dice.length; i++) {
                     if(dice[i].isSaved()) {
                         dice[i].setSaved(false);
-                        dice[i].getButton().setEnabled(false);
-                        dice[i].getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.RED, dice[i].getNumber()));
+                        ImageButton b = dice[i].getButton();
+                        b.setEnabled(false);
+                        b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.RED, dice[i].getNumber()));
                     }
                 }
                 comboSum += sum;

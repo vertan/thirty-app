@@ -12,4 +12,31 @@
         <item>@string/option_eleven</item>
         <item>@string/option_twelve</item>
     </string-array>
+
+    <array name="whiteFaces">
+        <item>@drawable/white1</item>
+        <item>@drawable/white2</item>
+        <item>@drawable/white3</item>
+        <item>@drawable/white4</item>
+        <item>@drawable/white5</item>
+        <item>@drawable/white6</item>
+    </array>
+
+    <array name="greyFaces">
+        <item>@drawable/grey1</item>
+        <item>@drawable/grey2</item>
+        <item>@drawable/grey3</item>
+        <item>@drawable/grey4</item>
+        <item>@drawable/grey5</item>
+        <item>@drawable/grey6</item>
+    </array>
+
+    <array name="redFaces">
+        <item>@drawable/red1</item>
+        <item>@drawable/red2</item>
+        <item>@drawable/red3</item>
+        <item>@drawable/red4</item>
+        <item>@drawable/red5</item>
+        <item>@drawable/red6</item>
+    </array>
 </resources>

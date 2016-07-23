@@ -58,12 +58,13 @@ public class Dice {
      * Toggles the save state on the die.
      */
     public void toggleSaved() {
+        ImageButton b = this.getButton();
         if(saved){
             this.setSaved(false);
-            this.getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.WHITE, this.getNumber()));
+            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, this.getNumber()));
         } else {
             this.setSaved(true);
-            this.getButton().setImageResource(DiceActivity.getFaceImage(DiceActivity.faceColor.GREY, this.getNumber()));
+            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.GREY, this.getNumber()));
         }
     }
 }

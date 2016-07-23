@@ -2,6 +2,8 @@ package se.bitninja.thirtygame;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,31 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class DiceActivity extends AppCompatActivity {
-
-    private static int[] whiteFaces = {
-            R.drawable.white1,
-            R.drawable.white2,
-            R.drawable.white3,
-            R.drawable.white4,
-            R.drawable.white5,
-            R.drawable.white6
-    };
-    private static int[] greyFaces = {
-            R.drawable.grey1,
-            R.drawable.grey2,
-            R.drawable.grey3,
-            R.drawable.grey4,
-            R.drawable.grey5,
-            R.drawable.grey6
-    };
-    private static int[] redFaces = {
-            R.drawable.red1,
-            R.drawable.red2,
-            R.drawable.red3,
-            R.drawable.red4,
-            R.drawable.red5,
-            R.drawable.red6
-    };
 
     public enum faceColor {WHITE, GREY, RED}
 
@@ -62,29 +39,37 @@ public class DiceActivity extends AppCompatActivity {
             dice[i] = new Dice(FACE_AMOUNT);
             String buttonID = "dice" + (i+1);
             int resID = getResources().getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
-            dice[i].setButton((ImageButton) findViewById(resID));
-            dice[i].getButton().setImageResource(getFaceImage(faceColor.WHITE, dice[i].getNumber()));
+            ImageButton b = (ImageButton) findViewById(resID);
+            dice[i].setButton(b);
+            b.setImageDrawable(getFaceImage(b, faceColor.WHITE, dice[i].getNumber()));
         }
 
     }
 
-    public static int getFaceImage(faceColor color, int number) {
-        int faceImage = 0;
+    public static Drawable getFaceImage(ImageButton button, faceColor color, int number) {
+        TypedArray whiteFaces = button.getResources().obtainTypedArray(R.array.whiteFaces);
+        TypedArray greyFaces = button.getResources().obtainTypedArray(R.array.greyFaces);
+        TypedArray redFaces = button.getResources().obtainTypedArray(R.array.redFaces);
+
+        Drawable faceImage = whiteFaces.getDrawable(0);
         switch(color) {
             case WHITE:
-                faceImage = whiteFaces[number-1];
+                faceImage = whiteFaces.getDrawable(number-1);
                 break;
             case GREY:
-                faceImage = greyFaces[number-1];
+                faceImage = greyFaces.getDrawable(number-1);
                 break;
             case RED:
-                faceImage = redFaces[number-1];
+                faceImage = redFaces.getDrawable(number-1);
                 break;
             default:
-                getFaceImage(faceColor.WHITE, number);
+                getFaceImage(button, faceColor.WHITE, number);
         }
-
+        whiteFaces.recycle();
+        greyFaces.recycle();
+        redFaces.recycle();
         return faceImage;
+
     }
 
     /**
@@ -125,7 +110,7 @@ public class DiceActivity extends AppCompatActivity {
                     continue;
                 }
                 dice[i].roll();
-                dice[i].getButton().setImageResource(getFaceImage(faceColor.WHITE, dice[i].getNumber()));
+                dice[i].getButton().setImageDrawable(getFaceImage(dice[i].getButton(), faceColor.WHITE, dice[i].getNumber()));
             }
             roundsLeft--;
             TextView text = (TextView)findViewById(R.id.available_throws);
