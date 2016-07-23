@@ -2,8 +2,10 @@ package se.bitninja.thirtygame;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,7 +48,10 @@ public class CheckScoreActivity extends AppCompatActivity {
         // Create spinner to let user choose method.
         Spinner spinner = (Spinner) findViewById(R.id.scoretype_spinner);
         ArrayList<String> scoreOptionsList = new ArrayList<>();
+
+        Log.d("testing", "length: " + scoreOptions.length);
         for(int i = 0; i < scoreOptions.length; i++) {
+            Log.d("scoreOptionTest", "testing" + scoreOptions[i]);
             if(!DiceActivity.usedSumTypes[i]) {
                 scoreOptionsList.add(scoreOptions[i]);
             }
@@ -79,29 +84,30 @@ public class CheckScoreActivity extends AppCompatActivity {
      */
     public int getPositionFromText(String text) {
         // The string representations of the different score methods.
-        switch(text) {
-            case "Low":
-                return 0;
-            case "Four":
-                return 1;
-            case "Five":
-                return 2;
-            case "Six":
-                return 3;
-            case "Seven":
-                return 4;
-            case "Eight":
-                return 5;
-            case "Nine":
-                return 6;
-            case "Ten":
-                return 7;
-            case "Eleven":
-                return 8;
-            case "Twelve":
-                return 9;
-            default:
-                return 0;
+        Resources r = getResources();
+        if(text.equals(r.getString(R.string.option_low))) {
+            return 0;
+        } else if(text.equals(r.getString(R.string.option_four))) {
+            return 1;
+        } else if(text.equals(r.getString(R.string.option_five))) {
+            return 2;
+        } else if(text.equals(r.getString(R.string.option_six))) {
+            return 3;
+        } else if(text.equals(r.getString(R.string.option_seven))) {
+            return 4;
+        } else if(text.equals(r.getString(R.string.option_eight))) {
+            return 5;
+        } else if(text.equals(r.getString(R.string.option_nine))) {
+            return 6;
+        } else if(text.equals(r.getString(R.string.option_ten))) {
+            return 7;
+        } else if(text.equals(r.getString(R.string.option_eleven))) {
+            return 8;
+        } else if(text.equals(r.getString(R.string.option_twelve))) {
+            return 9;
+        } else {
+            // No options left
+            return -1;
         }
 
     }
@@ -117,15 +123,16 @@ public class CheckScoreActivity extends AppCompatActivity {
         int chosenType = getPositionFromText(chosenString) + 3;
         int sum = 0;
 
+        String lowStr = getResources().getString(R.string.option_low);
         // Special case for the Low method.
-        if(chosenString.equals("Low")) {
+        if(chosenString.equals(lowStr)) {
             for(int i = 0; i < dice.length; i++) {
                 if(dice[i].isSaved()) {
                     if(dice[i].getNumber() <= 3) {
                         sum += dice[i].getNumber();
                     } else {
                         Context context = getApplicationContext();
-                        CharSequence text = "Dice with value over three not added to sum!";
+                        CharSequence text = getResources().getString(R.string.wrong_value_toast);
                         int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(context, text, duration);
                         toast.show();
@@ -145,7 +152,7 @@ public class CheckScoreActivity extends AppCompatActivity {
             // Update combo text
             comboSum += sum;
             TextView text2 = (TextView)findViewById(R.id.current_combo_score);
-            text2.setText("Combo score: " + comboSum);
+            text2.setText(String.format(getResources().getString(R.string.combo_score), comboSum));
 
         } else {
             // Count sum of current combo.
@@ -167,13 +174,14 @@ public class CheckScoreActivity extends AppCompatActivity {
                 comboSum += sum;
                 int currCombos = comboSum / chosenType;
                 TextView text = (TextView)findViewById(R.id.current_combo_sum);
-                text.setText(currCombos + " combinations of " + chosenString.toLowerCase() + ".");
+                text.setText(String.format(getResources().getString(R.string.combo_count), currCombos, chosenString.toLowerCase()));
                 TextView text2 = (TextView)findViewById(R.id.current_combo_score);
-                text2.setText("Combo score: " + comboSum);
+                text2.setText(String.format(getResources().getString(R.string.combo_score), comboSum));
             } else {
                 // Show hints about errors in combo
                 Context context = getApplicationContext();
-                CharSequence text = "Incorrect combo, try again!";
+
+                CharSequence text = getResources().getString(R.string.incorrect_combo);
                 int duration = Toast.LENGTH_SHORT;
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
@@ -215,10 +223,11 @@ public class CheckScoreActivity extends AppCompatActivity {
         Spinner spinner = (Spinner)findViewById(R.id.scoretype_spinner);
         String chosenType = spinner.getSelectedItem().toString();
         TextView text = (TextView)findViewById(R.id.current_combo_sum);
-        if(chosenType.equals("Low")) {
-            text.setText("Select all dice with a max value of three.");
+        if(chosenType.equals(getResources().getString(R.string.option_low))) {
+            text.setText(getResources().getString(R.string.select_low_combo));
         } else {
-            text.setText("0 combinations of " + chosenType.toLowerCase() + ".");
+            int currCombos = 0;
+            text.setText(String.format(getResources().getString(R.string.combo_count), currCombos, chosenType.toLowerCase()));
         }
         TextView text2 = (TextView)findViewById(R.id.current_combo_score);
         String comboString = this.getResources().getString(R.string.current_combo_score);
