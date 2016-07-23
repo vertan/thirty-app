@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="scoreOptions">
+        <item>@string/option_low</item>
+        <item>@string/option_four</item>
+        <item>@string/option_five</item>
+        <item>@string/option_six</item>
+        <item>@string/option_seven</item>
+        <item>@string/option_eight</item>
+        <item>@string/option_nine</item>
+        <item>@string/option_ten</item>
+        <item>@string/option_eleven</item>
+        <item>@string/option_twelve</item>
+    </string-array>
+</resources>
