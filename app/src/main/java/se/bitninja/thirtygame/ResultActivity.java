@@ -25,14 +25,16 @@ public class ResultActivity extends AppCompatActivity {
         ArrayList<String> resultList = new ArrayList<>();
         for(int i = 0; i < DiceActivity.scoreList.length; i++) {
             finalSum += DiceActivity.scoreList[i];
-            resultList.add(scoreOptions[i] + " - " + DiceActivity.scoreList[i]);
+            String resultListItemStr = String.format(getResources().getString(R.string.result_item),
+                    scoreOptions[i], DiceActivity.scoreList[i]);
+            resultList.add(resultListItemStr);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, resultList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         resultListView.setAdapter(adapter);
 
         TextView finalSumView = (TextView) findViewById(R.id.final_sum);
-        finalSumView.setText("Final sum: " + finalSum);
+        finalSumView.setText(String.format(getResources().getString(R.string.final_sum), finalSum));
     }
 
     public void backToMainMenu(View view) {
