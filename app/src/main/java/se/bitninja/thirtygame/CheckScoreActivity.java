@@ -17,14 +17,27 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * The score checking activity of the Thirty app, which allows the user to
+ *  check the scores of dice at the end of a round
+ * @author Filip Hedman
+ * @version 1.0 Jul 25, 2016
+ */
 public class CheckScoreActivity extends AppCompatActivity {
 
+    /** container for all dice currently in use **/
     private Dice[] dice;
+    /** the sum of the current combos **/
     private int comboSum;
+    /** keeps track of used sum types in current game session **/
     private boolean[] usedSumTypes;
 
     private final static String COMBO_SUM = "comboSum";
 
+    /**
+     * Called on creation of this activity
+     * @param savedInstanceState instance of state before destruction of activity, if available
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +48,7 @@ public class CheckScoreActivity extends AppCompatActivity {
         int[] savedDice = intent.getIntArrayExtra(DiceActivity.DICES);
         usedSumTypes = intent.getBooleanArrayExtra(DiceActivity.USED_SUM_TYPES);
 
+        // Check if there is a recovered state
         if(savedInstanceState != null) {
             comboSum  = savedInstanceState.getInt(COMBO_SUM);
             dice = (Dice[]) savedInstanceState.getParcelableArray(DiceActivity.DICE_ARRAY);
@@ -70,6 +84,7 @@ public class CheckScoreActivity extends AppCompatActivity {
 
         }
 
+        // Create callbacks for the spinner
         spinner.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -88,6 +103,10 @@ public class CheckScoreActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Called before destruction of activity
+     * @param savedInstanceState bundle to save data to
+     */
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -98,6 +117,10 @@ public class CheckScoreActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Called when restoring old instance state
+     * @param savedInstanceState state to restore data from
+     */
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -107,12 +130,12 @@ public class CheckScoreActivity extends AppCompatActivity {
         usedSumTypes = savedInstanceState.getBooleanArray(DiceActivity.USED_SUM_TYPES);
     }
 
-        /**
-         * Converts the string representation to the
-         * integer representation of the scoring methods.
-         * @param text The text to convert to a integer representation.
-         * @return The integer representation of a given method string.
-         */
+    /**
+     * Converts the string representation to the
+     * * integer representation of the scoring methods.
+     * @param text The text to convert to a integer representation.
+     * @return The integer representation of a given method string.
+     */
     public int getPositionFromText(String text) {
         // The string representations of the different score methods.
         Resources r = getResources();
@@ -231,7 +254,7 @@ public class CheckScoreActivity extends AppCompatActivity {
     /**
      * Saves the result for the chosen method, and then redirects
      * to the dice choosing activity.
-     * @param view
+     * @param view the view of the clicked button
      */
     public void saveCombos(View view) {
         Spinner spinner = (Spinner)findViewById(R.id.scoretype_spinner);
@@ -255,7 +278,7 @@ public class CheckScoreActivity extends AppCompatActivity {
     /**
      * Reacts to the user selecting a method in the spinner. It sets some text to
      * accomodate the choice made.
-     * @param view
+     * @param view the view of the clicked spinner item
      */
     public void chooseType(View view) {
         Spinner spinner = (Spinner)findViewById(R.id.scoretype_spinner);
@@ -273,8 +296,9 @@ public class CheckScoreActivity extends AppCompatActivity {
     }
 
     /**
-     * Toggles the save state of the clicked die.
-     * @param view The clicked view
+     * Toggles the save state of the clicked die and sets the
+     * image according to current state
+     * @param view The view of the clicked die
      */
     public void saveDice(View view) {
         switch(view.getId()) {
