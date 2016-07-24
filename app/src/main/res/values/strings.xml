@@ -7,7 +7,7 @@
     <string name="check_combo">Add combo to sum</string>
     <string name="current_combo_sum">0 combinations of sum 5.</string>
     <string name="current_combo_score">Combo score: 0</string>
-    <string name="save_combos">Save combos and continue!</string>
+    <string name="save_combos">Save and continue!</string>
     <string name="main_menu_text">Welcome to Thirty!</string>
     <string name="new_game">Start new game</string>
     <string name="result_title">Results</string>
