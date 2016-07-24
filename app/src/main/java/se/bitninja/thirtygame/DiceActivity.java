@@ -7,12 +7,17 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * The main activity of the Thirty app, which allows the user to pick dice
+ * to use later in the game
+ * @author Filip Hedman
+ * @version 1.0 Jul 25, 2016
+ */
 public class DiceActivity extends AppCompatActivity {
 
     public enum faceColor {WHITE, GREY, RED}
@@ -21,23 +26,35 @@ public class DiceActivity extends AppCompatActivity {
     private final String SCORE_LIST = "scoreList";
     public final static String DICE_ARRAY = "diceArray";
     public final static String USED_SUM_TYPES = "usedSumTypes";
-
-    private Dice[] dice;
-    private int roundsLeft = 2;
-    public static final int DICE_AMOUNT = 6;
-    public static final int FACE_AMOUNT = 6;
     public final static String DICES = "se.bitninja.thirty.DICES";
 
-    // Static values used between different activities.
+    /** container for all dice currently in use **/
+    private Dice[] dice;
+    /** amount of rounds left to throw dice **/
+    private int roundsLeft = 2;
+    /** amount of dice to use in game **/
+    public static final int DICE_AMOUNT = 6;
+    /** amount of faces on each die **/
+    public static final int FACE_AMOUNT = 6;
+
+
+    /** current round of game session **/
     public static int currentRound = 0;
+    /** holds all individual sums for each score type **/
     public static int[] scoreList = new int[10];
+    /** keeps track of used sum types in current game session **/
     private  boolean[] usedSumTypes = new boolean[10];
 
+    /**
+     * Called on creation of this activity
+     * @param savedInstanceState instance of state before destruction of activity, if available
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Check if there is a state to recover
         if(savedInstanceState != null) {
             roundsLeft = savedInstanceState.getInt(ROUNDS_LEFT);
             currentRound = savedInstanceState.getInt(CURRENT_ROUND);
@@ -46,7 +63,7 @@ public class DiceActivity extends AppCompatActivity {
             usedSumTypes = savedInstanceState.getBooleanArray(USED_SUM_TYPES);
         } else {
             currentRound++;
-            // Create new dice array and set the face pictures.
+            // Create new dice array
             dice = new Dice[DICE_AMOUNT];
             for(int i = 0; i < DICE_AMOUNT; i++) {
                 dice[i] = new Dice(FACE_AMOUNT);
@@ -55,26 +72,39 @@ public class DiceActivity extends AppCompatActivity {
             }
         }
 
+        // Set die face image according to current status of die
         for(int i = 0; i < DICE_AMOUNT; i++) {
             View v = findViewById(android.R.id.content);
             toggleDiceImage(v, dice[i]);
         }
 
+        // Get intent from last activity, if available
         Intent intent = getIntent();
         if(intent != null) {
             usedSumTypes = intent.getBooleanArrayExtra(DiceActivity.USED_SUM_TYPES);
         }
 
+        // Update text that keeps track of available throws
         TextView text = (TextView)findViewById(R.id.available_throws);
         text.setText(String.format(getResources().getString(R.string.rounds_left), roundsLeft));
     }
 
+    /**
+     * Returns a specific ImageButton from the activity
+     * @param v view to get resources from
+     * @param buttonID ID of the wanted button
+     * @return an ImageButton with the supplied identifier
+     */
     public static ImageButton getButton(View v, String buttonID) {
         Resources res = v.getResources();
         int resID = res.getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
         return (ImageButton) v.findViewById(resID);
     }
 
+    /**
+     * Called before destruction of activity
+     * @param savedInstanceState bundle to save data to
+     */
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -87,6 +117,10 @@ public class DiceActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Called when restoring old instance state
+     * @param savedInstanceState state to restore data from
+     */
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -99,6 +133,13 @@ public class DiceActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Returns a drawable that depicts a die face in wanted color and face side
+     * @param button button to get resources from
+     * @param color an enum representing the color of the die
+     * @param number an integer representing the face of the die
+     * @return a Drawable of a die
+     */
     public static Drawable getFaceImage(ImageButton button, faceColor color, int number) {
         TypedArray whiteFaces = button.getResources().obtainTypedArray(R.array.whiteFaces);
         TypedArray greyFaces = button.getResources().obtainTypedArray(R.array.greyFaces);
@@ -126,7 +167,7 @@ public class DiceActivity extends AppCompatActivity {
     }
 
     /**
-     * Toggles the save state of the clicked die.
+     * Toggles the save state of the clicked die
      * @param view The clicked view
      */
     public void saveDice(View view) {
@@ -158,6 +199,11 @@ public class DiceActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets the button image of the supplied die according to the status of the die
+     * @param view view to get resources from
+     * @param die the die to update image on
+     */
     public static void toggleDiceImage(View view, Dice die) {
         ImageButton b = getButton(view, die.getID());
         if(die.isDisabled()){
@@ -199,7 +245,7 @@ public class DiceActivity extends AppCompatActivity {
 
     /**
      * Redirects the user to the score checking activity.
-     * @param view The view of the clicked button
+     * @param view the view of the clicked button
      */
     public void checkScore(View view) {
         Intent intent = new Intent(this, CheckScoreActivity.class);
