@@ -93,7 +93,7 @@ public class DiceActivity extends AppCompatActivity {
 
         roundsLeft = savedInstanceState.getInt(ROUNDS_LEFT);
         dice = (Dice[]) savedInstanceState.getParcelableArray(DICE_ARRAY);
-        currentRound = savedInstanceState.getInt(ROUNDS_LEFT);
+        currentRound = savedInstanceState.getInt(CURRENT_ROUND);
         scoreList = savedInstanceState.getIntArray(SCORE_LIST);
         usedSumTypes = savedInstanceState.getBooleanArray(USED_SUM_TYPES);
 

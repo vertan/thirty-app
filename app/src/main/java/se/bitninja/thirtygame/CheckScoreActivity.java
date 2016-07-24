@@ -38,13 +38,6 @@ public class CheckScoreActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             comboSum  = savedInstanceState.getInt(COMBO_SUM);
             dice = (Dice[]) savedInstanceState.getParcelableArray(DiceActivity.DICE_ARRAY);
-
-            Log.d("comboSum", "value: " + comboSum);
-            //TextView text = (TextView)findViewById(R.id.current_combo_sum);
-            //text.setText(String.format(getResources().getString(R.string.combo_count), currCombos, chosenString.toLowerCase()));
-            TextView text2 = (TextView)findViewById(R.id.current_combo_score);
-            text2.setText(String.format(getResources().getString(R.string.combo_score), comboSum));
-            text2.setText("ARE YOU STUPID");
         } else {
             // Reconstruct the dice from last activity.
             comboSum = 0;
