@@ -19,6 +19,7 @@ public class DiceActivity extends AppCompatActivity {
     private final String ROUNDS_LEFT = "roundsLeft";
     private final String CURRENT_ROUND = "currentRound";
     private final String SCORE_LIST = "scoreList";
+    public final static String DICE_ARRAY = "diceArray";
     public final static String USED_SUM_TYPES = "usedSumTypes";
 
     private Dice[] dice;
@@ -40,10 +41,23 @@ public class DiceActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             roundsLeft = savedInstanceState.getInt(ROUNDS_LEFT);
             currentRound = savedInstanceState.getInt(CURRENT_ROUND);
+            dice = (Dice[]) savedInstanceState.getParcelableArray(DICE_ARRAY);
             scoreList = savedInstanceState.getIntArray(SCORE_LIST);
             usedSumTypes = savedInstanceState.getBooleanArray(USED_SUM_TYPES);
         } else {
             currentRound++;
+            // Create new dice array and set the face pictures.
+            dice = new Dice[DICE_AMOUNT];
+            for(int i = 0; i < DICE_AMOUNT; i++) {
+                dice[i] = new Dice(FACE_AMOUNT);
+                String ID = "dice" + (i+1);
+                dice[i].setID(ID);
+            }
+        }
+
+        for(int i = 0; i < DICE_AMOUNT; i++) {
+            View v = findViewById(android.R.id.content);
+            toggleDiceImage(v, dice[i]);
         }
 
         Intent intent = getIntent();
@@ -51,19 +65,8 @@ public class DiceActivity extends AppCompatActivity {
             usedSumTypes = intent.getBooleanArrayExtra(DiceActivity.USED_SUM_TYPES);
         }
 
-        // Create new dice array and set the face pictures.
-        dice = new Dice[DICE_AMOUNT];
-        for(int i = 0; i < DICE_AMOUNT; i++) {
-            dice[i] = new Dice(FACE_AMOUNT);
-            String ID = "dice" + (i+1);
-            dice[i].setID(ID);
-            View v = findViewById(android.R.id.content);
-            ImageButton b = getButton(v, ID);
-            b.setImageDrawable(getFaceImage(b, faceColor.WHITE, dice[i].getNumber()));
-        }
         TextView text = (TextView)findViewById(R.id.available_throws);
         text.setText(String.format(getResources().getString(R.string.rounds_left), roundsLeft));
-
     }
 
     public static ImageButton getButton(View v, String buttonID) {
@@ -77,7 +80,7 @@ public class DiceActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.putInt(ROUNDS_LEFT, roundsLeft);
-        // TODO Save Dice array
+        savedInstanceState.putParcelableArray(DICE_ARRAY, dice);
         savedInstanceState.putInt(CURRENT_ROUND, currentRound);
         savedInstanceState.putIntArray(SCORE_LIST, scoreList);
         savedInstanceState.putBooleanArray(USED_SUM_TYPES, usedSumTypes);
@@ -88,17 +91,12 @@ public class DiceActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        //roundsLeft = savedInstanceState.getInt(ROUNDS_LEFT);
-        //roundsLeft = 10;
-        // TODO Restore roundsLeft
-        // TODO Restore Dice array
-        // TODO Restore currentRound
-        // TODO Restore scoreList
-        // TODO Restore usedSumTypes
-        Log.d("TEEEEEEST", "onrestoreInstance!!!");
+        roundsLeft = savedInstanceState.getInt(ROUNDS_LEFT);
+        dice = (Dice[]) savedInstanceState.getParcelableArray(DICE_ARRAY);
+        currentRound = savedInstanceState.getInt(ROUNDS_LEFT);
+        scoreList = savedInstanceState.getIntArray(SCORE_LIST);
+        usedSumTypes = savedInstanceState.getBooleanArray(USED_SUM_TYPES);
 
-        //TextView text = (TextView)findViewById(R.id.available_throws);
-        //text.setText(String.format(getResources().getString(R.string.rounds_left), roundsLeft));
     }
 
     public static Drawable getFaceImage(ImageButton button, faceColor color, int number) {
@@ -162,10 +160,12 @@ public class DiceActivity extends AppCompatActivity {
 
     public static void toggleDiceImage(View view, Dice die) {
         ImageButton b = getButton(view, die.getID());
-        if(!die.isSaved()){
-            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, die.getNumber()));
+        if(die.isDisabled()){
+            b.setImageDrawable(DiceActivity.getFaceImage(b, faceColor.RED, die.getNumber()));
+        } else if(die.isSaved()) {
+            b.setImageDrawable(DiceActivity.getFaceImage(b, faceColor.GREY, die.getNumber()));
         } else {
-            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.GREY, die.getNumber()));
+            b.setImageDrawable(DiceActivity.getFaceImage(b, faceColor.WHITE, die.getNumber()));
         }
     }
 

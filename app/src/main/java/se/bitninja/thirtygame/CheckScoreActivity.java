@@ -3,6 +3,7 @@ package se.bitninja.thirtygame;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,8 @@ public class CheckScoreActivity extends AppCompatActivity {
     private int comboSum;
     private boolean[] usedSumTypes;
 
+    private final static String COMBO_SUM = "comboSum";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,24 +35,32 @@ public class CheckScoreActivity extends AppCompatActivity {
         int[] savedDice = intent.getIntArrayExtra(DiceActivity.DICES);
         usedSumTypes = intent.getBooleanArrayExtra(DiceActivity.USED_SUM_TYPES);
 
-        // Save state of used type locally
-        //boolean[] usedSumTypesLocal = new boolean[DiceActivity.usedSumTypes.length];
-        //System.arraycopy(DiceActivity.usedSumTypes, 0, usedSumTypesLocal, 0, DiceActivity.usedSumTypes.length);
+        if(savedInstanceState != null) {
+            comboSum  = savedInstanceState.getInt(COMBO_SUM);
+            dice = (Dice[]) savedInstanceState.getParcelableArray(DiceActivity.DICE_ARRAY);
 
-        // Reconstruct the dice from last activity.
-        comboSum = 0;
-        dice = new Dice[DiceActivity.DICE_AMOUNT];
-        for(int i = 0; i < savedDice.length; i++) {
-            dice[i] = new Dice(DiceActivity.FACE_AMOUNT);
-            dice[i].setNumber(savedDice[i]);
-            String buttonID = "dice" + (i+1);
-            dice[i].setID(buttonID);
+            Log.d("comboSum", "value: " + comboSum);
+            //TextView text = (TextView)findViewById(R.id.current_combo_sum);
+            //text.setText(String.format(getResources().getString(R.string.combo_count), currCombos, chosenString.toLowerCase()));
+            TextView text2 = (TextView)findViewById(R.id.current_combo_score);
+            text2.setText(String.format(getResources().getString(R.string.combo_score), comboSum));
+            text2.setText("ARE YOU STUPID");
+        } else {
+            // Reconstruct the dice from last activity.
+            comboSum = 0;
+            dice = new Dice[DiceActivity.DICE_AMOUNT];
+            for(int i = 0; i < savedDice.length; i++) {
+                dice[i] = new Dice(DiceActivity.FACE_AMOUNT);
+                dice[i].setNumber(savedDice[i]);
+                String buttonID = "dice" + (i + 1);
+                dice[i].setID(buttonID);
+            }
+        }
+
+        // Set die image accordingly
+        for(int i = 0; i < dice.length; i++) {
             View v = findViewById(android.R.id.content);
-            ImageButton b = DiceActivity.getButton(v, buttonID);
-            //int resID = getResources().getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
-            //ImageButton b = (ImageButton) findViewById(resID);
-            //dice[i].setButton(b);
-            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, dice[i].getNumber()));
+            DiceActivity.toggleDiceImage(v, dice[i]);
         }
 
         // The string representations of the different score methods.
@@ -84,12 +95,31 @@ public class CheckScoreActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Converts the string representation to the
-     * integer representation of the scoring methods.
-     * @param text The text to convert to a integer representation.
-     * @return The integer representation of a given method string.
-     */
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putParcelableArray(DiceActivity.DICE_ARRAY, dice);
+        savedInstanceState.putInt(COMBO_SUM, comboSum);
+        savedInstanceState.putBooleanArray(DiceActivity.USED_SUM_TYPES, usedSumTypes);
+
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        comboSum = savedInstanceState.getInt(COMBO_SUM);
+        dice = (Dice[]) savedInstanceState.getParcelableArray(DiceActivity.DICE_ARRAY);
+        usedSumTypes = savedInstanceState.getBooleanArray(DiceActivity.USED_SUM_TYPES);
+    }
+
+        /**
+         * Converts the string representation to the
+         * integer representation of the scoring methods.
+         * @param text The text to convert to a integer representation.
+         * @return The integer representation of a given method string.
+         */
     public int getPositionFromText(String text) {
         // The string representations of the different score methods.
         Resources r = getResources();
@@ -153,10 +183,11 @@ public class CheckScoreActivity extends AppCompatActivity {
             for(int i = 0; i < dice.length; i++) {
                 if(dice[i].isSaved()) {
                     dice[i].setSaved(false);
+                    dice[i].setDisabled(true);
                     View v = findViewById(android.R.id.content);
                     ImageButton b = DiceActivity.getButton(v, dice[i].getID());
                     b.setEnabled(false);
-                    b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.RED, dice[i].getNumber()));
+                    DiceActivity.toggleDiceImage(v, dice[i]);
                 }
             }
             // Update combo text
@@ -179,9 +210,9 @@ public class CheckScoreActivity extends AppCompatActivity {
                         dice[i].setSaved(false);
                         View v = findViewById(android.R.id.content);
                         ImageButton b = DiceActivity.getButton(v, dice[i].getID());
-                        //ImageButton b = dice[i].getButton();
                         b.setEnabled(false);
-                        b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.RED, dice[i].getNumber()));
+                        dice[i].setDisabled(true);
+                        DiceActivity.toggleDiceImage(v, dice[i]);
                     }
                 }
                 comboSum += sum;
@@ -240,12 +271,12 @@ public class CheckScoreActivity extends AppCompatActivity {
         if(chosenType.equals(getResources().getString(R.string.option_low))) {
             text.setText(getResources().getString(R.string.select_low_combo));
         } else {
-            int currCombos = 0;
+            int chosenInt = getPositionFromText(chosenType) + 3;
+            int currCombos = comboSum / chosenInt;
             text.setText(String.format(getResources().getString(R.string.combo_count), currCombos, chosenType.toLowerCase()));
         }
         TextView text2 = (TextView)findViewById(R.id.current_combo_score);
-        String comboString = this.getResources().getString(R.string.current_combo_score);
-        text2.setText(comboString);
+        text2.setText(String.format(getResources().getString(R.string.combo_score), comboSum));
     }
 
     /**

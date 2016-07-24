@@ -2,12 +2,11 @@ package se.bitninja.thirtygame;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.widget.ImageButton;
 
 public class Dice implements Parcelable {
 
     private int number, face, sides;
-    private boolean saved;
+    private boolean saved, disabled;
     private String ID;
 
     /**
@@ -17,6 +16,7 @@ public class Dice implements Parcelable {
         this.setSides(sides);
         this.roll();
         this.setSaved(false);
+        this.setDisabled(false);
     }
 
     @Override
@@ -30,6 +30,8 @@ public class Dice implements Parcelable {
         dest.writeInt(face);
         dest.writeInt(sides);
         dest.writeInt(saved ? 1 : 0);
+        dest.writeInt(disabled ? 1 : 0);
+        dest.writeString(ID);
     }
 
     // Creator
@@ -49,6 +51,8 @@ public class Dice implements Parcelable {
         face = in.readInt();
         sides = in.readInt();
         saved = in.readInt() != 0;
+        ID = in.readString();
+        disabled = in.readInt() != 0;
     }
 
 
@@ -91,7 +95,15 @@ public class Dice implements Parcelable {
 
     public void setSaved(boolean saved) { this.saved = saved; }
 
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
     public boolean isSaved() { return saved; }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
 
     /**
      * Toggles the save state on the die.
@@ -100,10 +112,8 @@ public class Dice implements Parcelable {
         //ImageButton b = this.getButton();
         if(saved){
             this.setSaved(false);
-            //b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, this.getNumber()));
         } else {
             this.setSaved(true);
-            //b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.GREY, this.getNumber()));
         }
     }
 }
