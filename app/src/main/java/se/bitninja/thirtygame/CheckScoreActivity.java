@@ -43,9 +43,12 @@ public class CheckScoreActivity extends AppCompatActivity {
             dice[i] = new Dice(DiceActivity.FACE_AMOUNT);
             dice[i].setNumber(savedDice[i]);
             String buttonID = "dice" + (i+1);
-            int resID = getResources().getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
-            ImageButton b = (ImageButton) findViewById(resID);
-            dice[i].setButton(b);
+            dice[i].setID(buttonID);
+            View v = findViewById(android.R.id.content);
+            ImageButton b = DiceActivity.getButton(v, buttonID);
+            //int resID = getResources().getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
+            //ImageButton b = (ImageButton) findViewById(resID);
+            //dice[i].setButton(b);
             b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, dice[i].getNumber()));
         }
 
@@ -150,7 +153,8 @@ public class CheckScoreActivity extends AppCompatActivity {
             for(int i = 0; i < dice.length; i++) {
                 if(dice[i].isSaved()) {
                     dice[i].setSaved(false);
-                    ImageButton b = dice[i].getButton();
+                    View v = findViewById(android.R.id.content);
+                    ImageButton b = DiceActivity.getButton(v, dice[i].getID());
                     b.setEnabled(false);
                     b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.RED, dice[i].getNumber()));
                 }
@@ -173,7 +177,9 @@ public class CheckScoreActivity extends AppCompatActivity {
                 for(int i = 0; i < dice.length; i++) {
                     if(dice[i].isSaved()) {
                         dice[i].setSaved(false);
-                        ImageButton b = dice[i].getButton();
+                        View v = findViewById(android.R.id.content);
+                        ImageButton b = DiceActivity.getButton(v, dice[i].getID());
+                        //ImageButton b = dice[i].getButton();
                         b.setEnabled(false);
                         b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.RED, dice[i].getNumber()));
                     }
@@ -243,29 +249,36 @@ public class CheckScoreActivity extends AppCompatActivity {
     }
 
     /**
-     * Toggle save state on clicked die.
-     * @param view The view of the clicked button.
+     * Toggles the save state of the clicked die.
+     * @param view The clicked view
      */
     public void saveDice(View view) {
         switch(view.getId()) {
             case R.id.dice1:
                 dice[0].toggleSaved();
+                DiceActivity.toggleDiceImage(view, dice[0]);
                 break;
             case R.id.dice2:
                 dice[1].toggleSaved();
+                DiceActivity.toggleDiceImage(view, dice[1]);
                 break;
             case R.id.dice3:
                 dice[2].toggleSaved();
+                DiceActivity.toggleDiceImage(view, dice[2]);
                 break;
             case R.id.dice4:
                 dice[3].toggleSaved();
+                DiceActivity.toggleDiceImage(view, dice[3]);
                 break;
             case R.id.dice5:
                 dice[4].toggleSaved();
+                DiceActivity.toggleDiceImage(view, dice[4]);
                 break;
             case R.id.dice6:
                 dice[5].toggleSaved();
+                DiceActivity.toggleDiceImage(view, dice[5]);
                 break;
         }
     }
+
 }

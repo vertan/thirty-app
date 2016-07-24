@@ -2,9 +2,9 @@ package se.bitninja.thirtygame;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,16 +55,21 @@ public class DiceActivity extends AppCompatActivity {
         dice = new Dice[DICE_AMOUNT];
         for(int i = 0; i < DICE_AMOUNT; i++) {
             dice[i] = new Dice(FACE_AMOUNT);
-            String buttonID = "dice" + (i+1);
-            int resID = getResources().getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
-            ImageButton b = (ImageButton) findViewById(resID);
-            dice[i].setButton(b);
+            String ID = "dice" + (i+1);
+            dice[i].setID(ID);
+            View v = findViewById(android.R.id.content);
+            ImageButton b = getButton(v, ID);
             b.setImageDrawable(getFaceImage(b, faceColor.WHITE, dice[i].getNumber()));
         }
-
         TextView text = (TextView)findViewById(R.id.available_throws);
         text.setText(String.format(getResources().getString(R.string.rounds_left), roundsLeft));
 
+    }
+
+    public static ImageButton getButton(View v, String buttonID) {
+        Resources res = v.getResources();
+        int resID = res.getIdentifier(buttonID, "id", "se.bitninja.thirtygame");
+        return (ImageButton) v.findViewById(resID);
     }
 
     @Override
@@ -130,22 +135,37 @@ public class DiceActivity extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.dice1:
                 dice[0].toggleSaved();
+                toggleDiceImage(view, dice[0]);
                 break;
             case R.id.dice2:
                 dice[1].toggleSaved();
+                toggleDiceImage(view, dice[1]);
                 break;
             case R.id.dice3:
                 dice[2].toggleSaved();
+                toggleDiceImage(view, dice[2]);
                 break;
             case R.id.dice4:
                 dice[3].toggleSaved();
+                toggleDiceImage(view, dice[3]);
                 break;
             case R.id.dice5:
                 dice[4].toggleSaved();
+                toggleDiceImage(view, dice[4]);
                 break;
             case R.id.dice6:
                 dice[5].toggleSaved();
+                toggleDiceImage(view, dice[5]);
                 break;
+        }
+    }
+
+    public static void toggleDiceImage(View view, Dice die) {
+        ImageButton b = getButton(view, die.getID());
+        if(!die.isSaved()){
+            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, die.getNumber()));
+        } else {
+            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.GREY, die.getNumber()));
         }
     }
 
@@ -160,7 +180,9 @@ public class DiceActivity extends AppCompatActivity {
                     continue;
                 }
                 dice[i].roll();
-                dice[i].getButton().setImageDrawable(getFaceImage(dice[i].getButton(), faceColor.WHITE, dice[i].getNumber()));
+                View v = findViewById(android.R.id.content);
+                ImageButton b = getButton(v, dice[i].getID());
+                b.setImageDrawable(getFaceImage(b, faceColor.WHITE, dice[i].getNumber()));
             }
             roundsLeft--;
             TextView text = (TextView)findViewById(R.id.available_throws);

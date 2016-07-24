@@ -1,12 +1,14 @@
 package se.bitninja.thirtygame;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageButton;
 
-public class Dice {
+public class Dice implements Parcelable {
 
     private int number, face, sides;
     private boolean saved;
-    private ImageButton button;
+    private String ID;
 
     /**
      * Construct a new Dice object.
@@ -17,6 +19,39 @@ public class Dice {
         this.setSaved(false);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(number);
+        dest.writeInt(face);
+        dest.writeInt(sides);
+        dest.writeInt(saved ? 1 : 0);
+    }
+
+    // Creator
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Dice createFromParcel(Parcel in) {
+            return new Dice(in);
+        }
+
+        public Dice[] newArray(int size) {
+            return new Dice[size];
+        }
+    };
+
+    // De-parcel object
+    public Dice(Parcel in) {
+        number = in.readInt();
+        face = in.readInt();
+        sides = in.readInt();
+        saved = in.readInt() != 0;
+    }
+
+
     /**
      * Roll the die
      */
@@ -24,6 +59,14 @@ public class Dice {
         int newSide = (int)Math.floor(Math.random() * this.sides + 1);
         this.setNumber(newSide);
         this.setFace(newSide);
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getID() {
+        return this.ID;
     }
 
     /**
@@ -46,10 +89,6 @@ public class Dice {
 
     public void setNumber(int number) { this.number = number; }
 
-    public void setButton(ImageButton button) { this.button = button; }
-
-    public ImageButton getButton() { return this.button; }
-
     public void setSaved(boolean saved) { this.saved = saved; }
 
     public boolean isSaved() { return saved; }
@@ -58,13 +97,13 @@ public class Dice {
      * Toggles the save state on the die.
      */
     public void toggleSaved() {
-        ImageButton b = this.getButton();
+        //ImageButton b = this.getButton();
         if(saved){
             this.setSaved(false);
-            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, this.getNumber()));
+            //b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.WHITE, this.getNumber()));
         } else {
             this.setSaved(true);
-            b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.GREY, this.getNumber()));
+            //b.setImageDrawable(DiceActivity.getFaceImage(b, DiceActivity.faceColor.GREY, this.getNumber()));
         }
     }
 }
