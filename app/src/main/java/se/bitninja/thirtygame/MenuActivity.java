@@ -23,7 +23,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Resets eventual old values from the DiceActivity class and
+     * Resets potential old values from the DiceActivity class and
      * starts the game from scratch by launching the next activity
      * @param view view of clicked button
      */
